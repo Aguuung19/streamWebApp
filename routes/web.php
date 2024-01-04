@@ -17,14 +17,8 @@ use Inertia\Inertia;
 */
 
 
-Route::get('/', function () {
-    return Inertia::render('Welcome', [
-        'canLogin' => Route::has('login'),
-        'canRegister' => Route::has('register'),
-        'laravelVersion' => Application::VERSION,
-        'phpVersion' => PHP_VERSION,
-    ]);
-});
+
+Route::redirect('/', '/login', 301);
 
 Route::get('/dashboard', function () {
     return Inertia::render('Dashboard');
@@ -34,6 +28,12 @@ Route::middleware('auth')->group(function () {
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
+});
+
+route::prefix('prototype')->group(function (){
+    route::get('/login', function() {
+        return Inertia::render('Prototype/Login');
+    });
 });
 
 require __DIR__.'/auth.php';
